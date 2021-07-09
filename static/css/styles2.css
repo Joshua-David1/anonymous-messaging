@@ -33,19 +33,20 @@ span{
 
 .profile-col{
 	position: relative;
-	border-radius: 15px 0 0 15px;
+	border-radius: 5px 0 0 5px;
 	width: 250px;
 	height: 800px;
 	background-color: white;
 }
 
 .chats-col{
-	border-radius:0 15px 15px 0;
+	border-radius:0 5px 5px 0;
 	width: 600px;
 	height: 800px;
 	background-color: #DAF6F9 ;
 	position: relative;
 	padding-top: 50px;
+	overflow: auto;
 }
 
 .fa-user-circle{
