@@ -1,0 +1,29 @@
+{% extends "user-base.html" %}
+{% block content %}
+<div class="chat-screen-div flex-box">
+    <div class="profile-col">
+        <i class="fas fa-user-circle fa-6x"></i>
+        <p class="chat-screen-username">{{username}}</p>
+        <img class="brand-logo" src="{{url_for('static',filename='assets/brand-logo1.png')}}">
+        <div class="send-msg-button">
+            <a  href="{{url_for('send_message_page')}}">Send Message</a>
+        </div>
+        <form action="/logout" method="POST">
+            <button class="logout-button" type="submit">Log Out</button>
+        </form>
+        
+    </div>
+    <div class="chats-col">
+        <div class="message-title">
+            <h2>Messgaes</h2>
+        </div>
+        {% for message in user_messages %}
+        <div class="messages">
+            {{message}}
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+{{super()}}
+{% endblock %}

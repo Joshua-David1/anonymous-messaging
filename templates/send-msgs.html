@@ -1,0 +1,25 @@
+{% extends "user-base.html" %}
+{% block content %}
+<div class="send-msg-div">
+	<img src="{{url_for('static',filename='assets/brand-logo-circle.png')}}" class="brand-logo-circle">
+	<h2 class="send-message-title">Send Message</h2>
+	<form action="{{url_for('send_message_page')}}" method="POST" novalidate>
+<!-- 		<input type="text" name="username" class="username-search" autocomplete="off">
+		<textarea maxlength="350" name="sent-message" rows="4" cols="50" placeholder="type your message here..." class="msg-to-send"></textarea>
+		<button class="btn submit-button">Send</button> -->
+		{{form.csrf_token}}
+		{{form.username(class="username-search",autocomplete="off")}}
+		{% for error in form.username.errors %}
+            <span style="color:red;font-size:15px;margin:0">{{ error }}</span>
+            {{break}}
+        {% endfor %}
+        {{form.sent_msg(class="msg_to_send",rows='4',cols='50')}}
+		{% for error in form.sent_msg.errors %}
+            <span style="color:red;font-size:15px;margin:0">{{ error }}</span>
+            {{break}}
+        {% endfor %}
+        <button class="btn submit-button">Send</button>
+	</form>
+</div>
+{{super()}}
+{% endblock %}
