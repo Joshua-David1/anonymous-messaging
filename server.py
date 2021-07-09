@@ -1,13 +1,39 @@
 from flask import Flask, redirect, url_for, render_template, request
+from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired, ValidationError, InputRequired, Regexp
 from os import environ
 
-usernames=[
-]
-current_user = [''];
+app = Flask(__name__)
+app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("SQLALCHEMY_URI")
+db = SQLAlchemy(app)
+
+
+current_user = ""
 logged_in = False
+
+
+##DATABASE MODELS
+
+##USER TABLE
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(30), unique=True, nullable = False)
+    password = db.Column(db.String(25), nullable=False)
+
+
+##MESSAGES TABLE
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(30), nullable = False)
+    user_message = db.Column(db.String(500), nullable = False)
+
+
+db.create_all()
+                    ###########################
+
 
 def min_char_check(form, field):
     if len(field.data) < 6:
@@ -22,30 +48,16 @@ class User_check(object):
 
     def __call__(self, form, field):
         if self.register:
-            for user_data in usernames:
-                if user_data['username'] == field.data:
-                    raise ValidationError(self.register_message)
+            user = User.query.filter_by(username = field.data).first()
+            if user:
+                raise ValidationError(self.register_message)
         else:
-            user_available = False 
-            for user_data in usernames:
-                if user_data['username'] == field.data:
-                    user_available = True
-                    break
-            if user_available == False:
-                raise ValidationError(self.login_message)
+            user = User.query.filter_by(username = field.data).first()
+            if user == None:
+                    raise ValidationError(self.login_message)
+
 
 user_check = User_check
-# def user_check(register=False):
-#     login_message = "user unavailable"
-#     register_message = "user already exists"
-#     def _user_check(form, field):
-#         if register:
-#             if field.data in usernames:
-#                 raise ValidationError(register_message)
-#         else:
-#             if field.data not in usernames:
-#                 raise ValidationError(login_message)
-#     return _user_check
 
 
 class Pass_check(object):
@@ -53,10 +65,10 @@ class Pass_check(object):
         self.error_message = "Incorrect Password"
 
     def __call__(self, form, field):
-        for user_data in usernames:
-            if user_data['username'] == form.username.data:
-                if user_data['password'] != field.data:
-                    raise ValidationError('Password Incorrect')
+        user = User.query.filter_by(username = form.username.data).first()
+        if user is None or user.password != field.data:
+            raise ValidationError('Password Incorrect')
+                    
 
 pass_check = Pass_check
 
@@ -77,80 +89,66 @@ class SendMsgForm(FlaskForm):
 
 ##########
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = environ['SECRET_KEY']
-
-
-
-
 @app.route("/")
 def home():
-    if logged_in:
-        return redirect(url_for('messages_page'))
     return redirect(url_for('login_page'))
 
 
 @app.route("/login",methods=["POST", "GET"])
 def login_page():
+    global current_user
     global logged_in
-    if not logged_in:
-        form = LoginForm()
-        if form.validate_on_submit():
-            # username[0] = request.form['username'].split('@')[0]
-            logged_in = True
-            for user_data in usernames:
-                if user_data['username'] == form.username.data:
-                    current_user[0] = user_data
-                    break
-            return redirect(url_for('messages_page'))
-        return render_template('login.html',form=form)
-    return redirect(url_for('messages_page'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        current_user = form.username.data
+        logged_in = True
+        return redirect(url_for('messages_page'))
+    return render_template('login.html', form  = form)
 
 @app.route("/register", methods=["POST", "GET"])
 def register_page():
     global logged_in
+    global current_user
     form = RegisterForm()
-    if not logged_in:
-        if form.validate_on_submit():
-            data = {'username':form.username.data,'messages':[],'password':form.password.data}
-            usernames.append(data)
-            logged_in = True
-            current_user[0] = usernames[-1]
-            return redirect(url_for('messages_page'))
-        return render_template('register.html', form=form)
-    return redirect(url_for('messages_page'))
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        new_user = User(username = username, password = password)
+        db.session.add(new_user)
+        db.session.commit()
+        current_user = form.username.data
+        logged_in = True
+        return redirect(url_for('messages_page'))
+    return render_template('register.html', form = form)
 
 @app.route("/user-messages")
 def messages_page():
+    global logged_in
+    print(logged_in)
     if logged_in:
-        return render_template('user-msgs.html',username=current_user[0]['username'], user_messages = current_user[0]['messages'][::-1])
+        username = User.query.filter_by(username = current_user).first()
+        user_messages = Message.query.filter_by(username = current_user).all()
+        return render_template('user-msgs.html',username=username.username, user_messages = [user.user_message for user in user_messages][::-1])
     else:
         return redirect(url_for('home'))
 
 @app.route('/send-message', methods=["POST", "GET"])
 def send_message_page():
-    global logged_in
     form = SendMsgForm()
-    if not logged_in:
-        return redirect(url_for('login_page'))
-    else:
-        if form.validate_on_submit():
-            username = form.username.data
-            message = request.form['sent_msg']
-            for user_data in usernames:
-                if user_data['username'] == username:
-                    user_data['messages'].append(message)
-                    print(user_data)
-                    break
-            return redirect(url_for('messages_page'))
+    if form.validate_on_submit():
+        username = form.username.data
+        message = request.form['sent_msg']
+        new_message = Message(username = username, user_message = message)
+        db.session.add(new_message)
+        db.session.commit()
+        return redirect(url_for('messages_page'))
     return render_template('send-msgs.html',form = form)
 
 @app.route('/logout',methods=["POST"])
 def logout_page():
-    global logged_in
     if request.method == "POST":
         logged_in = False
-        current_user[0] = ''
+        current_user = ""
         return redirect(url_for('login_page'))
 
 if __name__ == "__main__":
