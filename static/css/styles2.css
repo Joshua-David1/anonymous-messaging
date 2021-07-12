@@ -196,6 +196,21 @@ span{
 	outline: none;
 }
 
+.fa-trash{
+	position: relative;
+	width: 20px;
+}
+
+.bin-icon{
+	color: #60E6F8;
+	transition: 1s;
+}
+
+.bin-icon:hover{
+	color: #DAF6F9;
+	
+}
+
 button.submit-button{
 	border-radius: 15px;
 	background-color: #6BDDED;
@@ -209,4 +224,5 @@ button.submit-button{
 button.submit-button:hover{
 	background-color: #59ECFE;
 }
+
 

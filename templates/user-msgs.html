@@ -19,10 +19,12 @@
         </div>
         {% for message in user_messages %}
         <div class="messages">
-            {{message}}
+            {{message.user_message}}
+            <a class="bin-icon" href="{{url_for('delete_message',msg_id=message.id)}}"><i class="fas fa-trash"></i></a>
         </div>
 
         {% endfor %}
+
     </div>
 </div>
 {{super()}}

@@ -9,9 +9,12 @@ from datetime import timedelta
 from os import environ
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = environ.get("SECRET_KEY")
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("SQLALCHEMY_DATABASE_URI")
+app.config['SECRET_KEY'] = 'ydouyoucare'
+app.config['SQLALCHEMY_DATABASE_URI'] ='sqlite:///user-data-collection.db' 
 db = SQLAlchemy(app)
+
+# environ.get("SECRET_KEY")
+# environ.get("SQLALCHEMY_DATABASE_URI")
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -46,6 +49,21 @@ def min_char_check(form, field):
     if len(field.data) < 6:
         raise ValidationError('Minimum 6 characters required')
 
+
+class Same_user_check(object):
+    def __init__(self):
+        self.error_message = "You cannot send message to yourself"
+
+    def __call__(self, form, field):
+        entered_username = field.data
+        current_username = current_user.username
+        print(current_username)
+        print(entered_username)
+        if entered_username == current_username:
+            raise ValidationError(self.error_message)
+
+
+same_user_check = Same_user_check
 
 class User_check(object):
     def __init__(self, register = False):
@@ -91,7 +109,7 @@ class RegisterForm(FlaskForm):
 
 
 class SendMsgForm(FlaskForm):
-    username = StringField('username', render_kw={"placeholder":"Username to send msg","maxlength":25},validators=[InputRequired(message="Enter username"), user_check()])
+    username = StringField('username', render_kw={"placeholder":"Username to send msg","maxlength":25},validators=[InputRequired(message="Enter username"), user_check(), same_user_check()])
     sent_msg = TextAreaField('sent_msg', render_kw={"placeholder":"type your message here...","maxlength":350},validators=[InputRequired()])
 
 ##########
@@ -141,7 +159,7 @@ def messages_page():
     if current_user.is_authenticated:
         username = User.query.filter_by(username = current_user.username).first()
         user_messages = Message.query.filter_by(username = current_user.username).all()
-        return render_template('user-msgs.html',username=username.username, user_messages = [user.user_message for user in user_messages][::-1])
+        return render_template('user-msgs.html',username=username.username, user_messages = [user for user in user_messages][::-1])
     else:
         return redirect(url_for('home'))
 
@@ -167,6 +185,24 @@ def logout_page():
             return redirect(url_for('login_page'))
         return redirect(url_for('home'))
     return redirect(url_for('home'))
+
+@app.route('/delete-msg')
+def delete_message():
+    if current_user.is_authenticated:
+        msg_id = request.args.get("msg_id")
+        print(msg_id)
+        id_user = Message.query.filter_by(id=msg_id).first().username
+        print(id_user)
+        if(id_user == current_user.username):
+            msg_to_be_deleted = Message.query.filter_by(id = msg_id).first()
+            db.session.delete(msg_to_be_deleted)
+            db.session.commit()
+            return redirect(url_for('messages_page'))
+        else:
+            return redirect(url_for('messages_page'))
+    else:
+        return redirect(url_for('home'))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
