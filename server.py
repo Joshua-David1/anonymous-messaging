@@ -189,16 +189,17 @@ def logout_page():
 @app.route('/delete-msg')
 def delete_message():
     if current_user.is_authenticated:
-        msg_id = request.args.get("msg_id")
-        print(msg_id)
-        id_user = Message.query.filter_by(id=msg_id).first().username
-        print(id_user)
-        if(id_user == current_user.username):
-            msg_to_be_deleted = Message.query.filter_by(id = msg_id).first()
-            db.session.delete(msg_to_be_deleted)
-            db.session.commit()
+        try:
+            msg_id = request.args.get("msg_id")
+            print(msg_id)
+            id_user = Message.query.filter_by(id=msg_id).first().username
+            print(id_user)
+            if(id_user == current_user.username):
+                msg_to_be_deleted = Message.query.filter_by(id = msg_id).first()
+                db.session.delete(msg_to_be_deleted)
+                db.session.commit()
             return redirect(url_for('messages_page'))
-        else:
+        except:
             return redirect(url_for('messages_page'))
     else:
         return redirect(url_for('home'))
