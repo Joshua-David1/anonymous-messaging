@@ -209,9 +209,12 @@ def delete_message():
 
 @app.route('/user/<username>')
 def copy_username(username):
-    pyperclip.copy(username)
-    flash("Username Copied")
-    return redirect(url_for('messages_page'))
+    if current_user.is_authenticated:
+        pyperclip.copy(username)
+        flash("Username Copied")
+        return redirect(url_for('messages_page'))
+    else:
+        return redirect(url_for('home'))
 
 
 if __name__ == "__main__":
