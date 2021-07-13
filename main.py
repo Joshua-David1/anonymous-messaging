@@ -7,12 +7,13 @@ from flask_login import LoginManager, login_user, UserMixin, logout_user, curren
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
 import pyperclip
+import os
 from os import environ
 from decouple import config
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = config("SECRET_KEY")
-app.config['SQLALCHEMY_DATABASE_URI'] =config("SQLALCHEMY_DATABASE_URI")
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
+app.config['SQLALCHEMY_DATABASE_URI'] =os.getenv("SQLALCHEMY_DATABASE_URI")
 db = SQLAlchemy(app)
 
 
