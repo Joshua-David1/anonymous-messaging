@@ -13,8 +13,9 @@ from os import environ
 from decouple import config
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = config("SECRET_KEY")
-app.config['SQLALCHEMY_DATABASE_URI'] = config("SQLALCHEMY_DATABASE_URI",'sqlite:///user-data-collection.db')
+app.config['SECRET_KEY'] = config("SECRET_KEY","Dontknow")
+app.config['SQLALCHEMY_DATABASE_URI'] = config("SQLALCHEMY_DATABASE_URI","sqlite:///user-data-collection.db")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = "OFF"
 db = SQLAlchemy(app)
 
 
@@ -221,4 +222,5 @@ def copy_username(username):
 
 
 if __name__ == "__main__":
-    app.run()
+    port = config("PORT",5000)
+    app.run(debug=True, port=port)
