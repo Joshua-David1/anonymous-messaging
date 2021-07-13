@@ -11,8 +11,8 @@ from os import environ
 from decouple import config
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = config(f"{SECRET_KEY}")
-app.config['SQLALCHEMY_DATABASE_URI'] =config(f"{SQLALCHEMY_DATABASE_URI}")
+app.config['SECRET_KEY'] = "Dontknow"
+app.config['SQLALCHEMY_DATABASE_URI'] ="sqlite:///user-data-collection.db"
 db = SQLAlchemy(app)
 
 
