@@ -131,7 +131,7 @@ span{
 	top: 45%;
 	left: 50%;
 	transform: translate(-50%,-50%);
-	width: 225px;
+	width: 200px;
 }
 
 /*.send-msg-div{
@@ -212,9 +212,10 @@ span{
 }
 
 .copy-username{
+	position: relative;
 	padding: 5px;
 	background-color: #DAF6F9;
-	font-size: 10px;
+	font-size: 12px;
 	border-radius: 8px;
 	color: #7FECFB;
 	font-weight: 800;
@@ -251,3 +252,197 @@ button.submit-button:hover{
 }
 
 
+@media screen and (max-width: 1550px) and (min-width: 859px) {
+	.chat-screen-div{
+		text-align: center;
+		box-shadow: 10px 10px 8px #DAF6F9;
+		position: absolute;
+		display: inline-flex;
+		top: 48%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		height: 600px;
+		width: 850px;
+		background-color: white;
+	 	border-radius: 15px;
+	}
+	.profile-col{
+		position: relative;
+		border-radius: 5px 0 0 5px;
+		width: 250px;
+		height: 650px;
+		background-color: white;
+	}
+
+	.chats-col{
+		border-radius:0 5px 5px 0;
+		width: 600px;
+		height: 650px;
+		background-color: #DAF6F9 ;
+		position: relative;
+		padding-top: 50px;
+		overflow: auto;
+	}
+}
+
+@media screen and (max-width: 858px){
+	/*User Message Page*/
+	.chat-screen-div{
+		text-align: center;
+		box-shadow: 10px 10px 8px #DAF6F9;
+		position: absolute;
+		display: block;
+		top: 53%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		height: 580px;
+		width: 400px;
+		background-color: white;
+	 	border-radius: 15px;
+	}
+	.profile-col{
+		position: relative;
+		border-radius: 5px 0 0 5px;
+		width: 400px;
+		height: 40px;
+		background-color: white;
+	}
+
+	.chats-col{
+		margin-top: 10px;
+		border-radius: 7px;
+		width: 400px;
+		height: 390px;
+		background-color: #DAF6F9 ;
+		position: relative;
+		padding-top: 20px;
+		overflow: auto;
+	}
+	.message-title h2{
+		font-size: 25px;
+	}
+	.chat-screen-username{
+		font-family: 'Mate SC', serif;
+		font-weight: 900;
+		font-size: 19px;
+		position: relative;
+		top: -20px;
+		color: #60E6F8;
+	}
+ 
+	.messages{
+		margin: 30px 0 10px 50%;
+		background-color: white;
+	/*	height: 120px;*/
+		transform: translateX(-50%);
+		width: 250px;
+		border-radius: 0px 30px 30px 30px;
+		box-shadow: 2px 2px 20px #60E6F8;
+		text-align: center;
+		font-size: 12px;
+		padding: 10px;
+	/*	font-family: 'Montserrat', sans-serif;*/
+	}
+	.fa-user-circle{
+		position: absolute;
+		top: -160%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		color: #DAF6F9;
+	}
+	.brand-logo{
+		position: absolute;
+		top: -50%;
+		left: 10%;
+		transform: translate(-50%,-50%);
+		width: 60px;
+	}
+	.send-msg-button{
+		position: absolute;
+		left: 110px;
+		top: 475px;
+		transform: translate(-50%,-50%);
+		cursor: pointer;
+		padding: 7px;
+		background-color:#DAF6F9;
+		border-radius: 50px;
+	}
+	.logout-button{
+		border: none;
+		padding: 7px 20px 7px 20px;
+		cursor: pointer;
+		border-radius: 50px;
+		position: absolute;
+		font-size: 17px;
+		font-weight: 500;
+		background-color:#DAF6F9;
+		transition: 1500ms;
+		color: #60E6F8;
+		bottom: -455px;
+		right: 10px;
+		transform: translateX(-50%);
+	}
+
+	.copy-username{
+		position: relative;
+		padding: 5px;
+		background-color: #DAF6F9;
+		font-size: 10px;
+		border-radius: 8px;
+		color: #7FECFB;
+		font-weight: 800;
+		transition: 1s;
+		top: -35px;
+	}
+	.flash{
+		background-color: #CBF3DA;
+		display: inline-block;
+		border-radius: 5px;
+		color:#2ED16A;
+		font-size:12px;
+		margin:10px 0 0 0;
+		padding: 5px;
+	}
+
+
+	/*Send Message Page*/
+	.send-msg-div{
+		height: 500px;
+		width: 370px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		border-radius: 20px;
+		background-color: #DAF6F9;
+		text-align: center;
+		padding: 50px 10px 20px 10px;
+		box-shadow: 5px 5px 15px #DAF6F9;
+	}
+	.username-search{
+		text-align: center;
+		border: none;
+		border-radius: 15px;
+		margin: 20px;
+		padding: 8px;
+		font-size: 14px;
+		width: 50%;
+	}
+	.msg_to_send{
+		margin: 30px 0 10px 0;
+		padding: 10px;
+		border: none;
+		border-radius: 15px;
+		height: 185px;
+		outline: none;
+		width: 270px;
+		resize: none;
+	}
+	.brand-logo-circle{
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 75px;
+	}
+}
