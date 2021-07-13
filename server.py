@@ -184,7 +184,6 @@ def logout_page():
     if current_user.is_authenticated:
         if request.method == "POST":
             logout_user()
-            flash("!! Logged Out !!")
             return redirect(url_for('login_page'))
         return redirect(url_for('home'))
     return redirect(url_for('home'))
