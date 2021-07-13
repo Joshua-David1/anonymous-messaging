@@ -7,4 +7,3 @@ flask_login
 Werkzeug>=2.0.1
 datetime
 pyperclip
-os
