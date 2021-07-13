@@ -7,3 +7,4 @@ flask_login
 Werkzeug>=2.0.1
 datetime
 pyperclip
+gunicorn==20.1.0
