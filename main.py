@@ -35,15 +35,15 @@ def load_user(user_id):
 ##USER TABLE
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(30), unique=True, nullable = False)
-    password = db.Column(db.String(25), nullable=False)
+    username = db.Column(db.String(255), unique=True, nullable = False)
+    password = db.Column(db.String(255), nullable=False)
 
 
 ##MESSAGES TABLE
 class Message(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(30), nullable = False)
-    user_message = db.Column(db.String(500), nullable = False)
+    username = db.Column(db.String(255), nullable = False)
+    user_message = db.Column(db.String(50000), nullable = False)
 
 
 db.create_all()
