@@ -111,3 +111,14 @@ button.submit-button:hover{
 	height: 100%;
 	margin: 10%;
 }
+
+.flash{
+	position: relative;
+	background-color: #CBF3DA;
+	display: inline-block;
+	border-radius: 5px;
+	color:#2ED16A;
+	font-size:15px;
+	top: 20px;
+	padding: 5px;
+}

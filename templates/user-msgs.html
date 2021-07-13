@@ -4,6 +4,7 @@
     <div class="profile-col">
         <i class="fas fa-user-circle fa-6x"></i>
         <p class="chat-screen-username">{{username}}</p>
+        <a href="{{url_for('copy_username',username=username)}}" class="copy-username">Share you username</a>
         <img class="brand-logo" src="{{url_for('static',filename='assets/brand-logo1.png')}}">
         <div class="send-msg-button">
             <a  href="{{url_for('send_message_page')}}">Send Message</a>
@@ -17,12 +18,20 @@
         <div class="message-title">
             <h2>Messgaes</h2>
         </div>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <span class="flash">
+                    {{message}}!!
+                    </span>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
         {% for message in user_messages %}
         <div class="messages">
             {{message.user_message}}
             <a class="bin-icon" href="{{url_for('delete_message',msg_id=message.id)}}"><i class="fas fa-trash"></i></a>
         </div>
-
         {% endfor %}
 
     </div>

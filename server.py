@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request, session, g
+from flask import Flask, flash, redirect, url_for, render_template, request, session, g
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField
@@ -6,6 +6,7 @@ from wtforms.validators import DataRequired, ValidationError, InputRequired, Reg
 from flask_login import LoginManager, login_user, UserMixin, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
+import pyperclip
 from os import environ
 
 app = Flask(__name__)
@@ -173,6 +174,7 @@ def send_message_page():
             new_message = Message(username = username, user_message = message)
             db.session.add(new_message)
             db.session.commit()
+            flash("Message sent successfully")
             return redirect(url_for('messages_page'))
         return render_template('send-msgs.html',form = form)
     return redirect(url_for('home'))
@@ -182,6 +184,7 @@ def logout_page():
     if current_user.is_authenticated:
         if request.method == "POST":
             logout_user()
+            flash("!! Logged Out !!")
             return redirect(url_for('login_page'))
         return redirect(url_for('home'))
     return redirect(url_for('home'))
@@ -203,6 +206,13 @@ def delete_message():
             return redirect(url_for('messages_page'))
     else:
         return redirect(url_for('home'))
+
+
+@app.route('/user/<username>')
+def copy_username(username):
+    pyperclip.copy(username)
+    flash("Username Copied")
+    return redirect(url_for('messages_page'))
 
 
 if __name__ == "__main__":
