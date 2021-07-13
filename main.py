@@ -35,15 +35,15 @@ def load_user(user_id):
 ##USER TABLE
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(255), unique=True, nullable = False)
-    password = db.Column(db.String(255), nullable=False)
+    username = db.Column(db.String(25), unique=True, nullable = False)
+    password = db.Column(db.String(25), nullable=False)
 
 
 ##MESSAGES TABLE
 class Message(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(255), nullable = False)
-    user_message = db.Column(db.String(50000), nullable = False)
+    username = db.Column(db.String(25), nullable = False)
+    user_message = db.Column(db.String(10000), nullable = False)
 
 
 db.create_all()
@@ -96,7 +96,7 @@ class Pass_check(object):
 
     def __call__(self, form, field):
         user = User.query.filter_by(username = form.username.data).first()
-        if user is None or not check_password_hash(user.password,field.data):
+        if user is None or field.data != user.password:
             raise ValidationError('Password Incorrect')
                     
 
@@ -150,7 +150,7 @@ def register_page():
         if form.validate_on_submit():
             username = form.username.data
             password = form.password.data
-            password = generate_password_hash(password, method="pbkdf2:sha256", salt_length=4)
+            # password = generate_password_hash(password, method="pbkdf2:sha256", salt_length=1)
             new_user = User(username = username, password = password)
             db.session.add(new_user)
             db.session.commit()

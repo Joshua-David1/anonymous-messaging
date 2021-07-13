@@ -8,11 +8,11 @@
 <!--         <input type="email" name="username" placeholder="Username/email" autocomplete="off" maxlength="30">
         <input type="password" name="password" placeholder="Password" maxlength="20"> -->
         {{ form.csrf_token }}
-        {{ form.username(size=300,autocomplete="off") }}
+        {{ form.username(autocomplete="off") }}
         {% if form.username.errors %}
         <span style="color:red;font-size:15px;margin:0">{{ form.username.errors[0]}}</span>
         {% endif %}
-        {{ form.password(size=300) }}
+        {{ form.password}}
         {% if form.password.errors and not form.username.errors %}
             <span style="color:red;font-size:15px;margin:0">{{ form.password.errors[0]}}</span>
         {% endif %}
