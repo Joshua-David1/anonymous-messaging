@@ -258,10 +258,10 @@ button.submit-button:hover{
 		box-shadow: 10px 10px 8px #DAF6F9;
 		position: absolute;
 		display: inline-flex;
-		top: 48%;
+		top: 51%;
 		left: 50%;
 		transform: translate(-50%,-50%);
-		height: 600px;
+		height: 570px;
 		width: 850px;
 		background-color: white;
 	 	border-radius: 15px;
@@ -270,18 +270,70 @@ button.submit-button:hover{
 		position: relative;
 		border-radius: 5px 0 0 5px;
 		width: 250px;
-		height: 650px;
+		height: 570px;
 		background-color: white;
 	}
 
 	.chats-col{
 		border-radius:0 5px 5px 0;
 		width: 600px;
-		height: 650px;
+		height: 570px;
 		background-color: #DAF6F9 ;
 		position: relative;
 		padding-top: 50px;
 		overflow: auto;
+	}
+	.brand-logo{
+		position: absolute;
+		top: 45%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		width: 150px;
+	}
+	.send-msg-button{
+		position: absolute;
+		top: 80%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		cursor: pointer;
+		padding: 7px;
+		font-size: 14px;
+		background-color:#DAF6F9;
+		border-radius: 50px;
+	}
+	.logout-button{
+		border: none;
+		padding: 7px 20px 7px 20px;
+		cursor: pointer;
+		border-radius: 50px;
+		position: absolute;
+		font-size: 14px;
+		font-weight: 500;
+		background-color:#DAF6F9;
+		transition: 1500ms;
+		color: #60E6F8;
+		bottom: 5%;
+		transform: translateX(-50%);
+	}
+	.send-msg-div{
+		height: 550px;
+		width: 500px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		border-radius: 20px;
+		background-color: #DAF6F9;
+		text-align: center;
+		padding: 80px 10px 20px 10px;
+		box-shadow: 5px 5px 15px #DAF6F9;
+	}
+	.brand-logo-circle{
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 85px;
 	}
 }
 
@@ -296,14 +348,14 @@ button.submit-button:hover{
 		left: 50%;
 		transform: translate(-50%,-50%);
 		height: 580px;
-		width: 400px;
+		width: 350px;
 		background-color: white;
 	 	border-radius: 15px;
 	}
 	.profile-col{
 		position: relative;
 		border-radius: 5px 0 0 5px;
-		width: 400px;
+		width: 350px;
 		height: 40px;
 		background-color: white;
 	}
@@ -311,7 +363,7 @@ button.submit-button:hover{
 	.chats-col{
 		margin-top: 10px;
 		border-radius: 7px;
-		width: 400px;
+		width: 350px;
 		height: 390px;
 		background-color: #DAF6F9 ;
 		position: relative;
@@ -366,6 +418,7 @@ button.submit-button:hover{
 		padding: 7px;
 		background-color:#DAF6F9;
 		border-radius: 50px;
+		font-size: 14px;
 	}
 	.logout-button{
 		border: none;
@@ -373,7 +426,7 @@ button.submit-button:hover{
 		cursor: pointer;
 		border-radius: 50px;
 		position: absolute;
-		font-size: 17px;
+		font-size: 14px;
 		font-weight: 500;
 		background-color:#DAF6F9;
 		transition: 1500ms;
@@ -408,7 +461,7 @@ button.submit-button:hover{
 	/*Send Message Page*/
 	.send-msg-div{
 		height: 500px;
-		width: 370px;
+		width: 350px;
 		position: absolute;
 		top: 50%;
 		left: 50%;
