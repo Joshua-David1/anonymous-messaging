@@ -1,0 +1,10 @@
+flask
+flask_sqlalchemy
+flask_wtf
+wtforms
+wtforms.validators
+flask_login
+werkzeug.security
+datetime
+pyperclip
+os
