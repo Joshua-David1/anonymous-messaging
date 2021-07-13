@@ -10,5 +10,3 @@ pyperclip
 gunicorn==20.1.0
 python_dotenv
 python-decouple==3.4
-decouple
-decouple==0.0.7
