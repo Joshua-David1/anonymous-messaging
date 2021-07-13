@@ -8,5 +8,5 @@ Werkzeug>=2.0.1
 datetime
 pyperclip
 gunicorn==20.1.0
-python_dotenv==0.18.0
+python_dotenv
 decouple
