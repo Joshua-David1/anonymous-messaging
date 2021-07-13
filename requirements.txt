@@ -4,8 +4,7 @@ flask_wtf
 wtforms
 wtforms.validators
 flask_login
-werkzeug
-werkzeug.security
+Werkzeug>=2.0.1
 datetime
 pyperclip
 os
