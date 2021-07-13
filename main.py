@@ -8,12 +8,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
 import pyperclip
 import os
+import psycopg2
 from os import environ
 from decouple import config
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = config("SECRET_KEY")
-app.config['SQLALCHEMY_DATABASE_URI'] = config("SQLALCHEMY_DATABASE_URI")
+app.config['SQLALCHEMY_DATABASE_URI'] = config("SQLALCHEMY_DATABASE_URI",'sqlite:///user-data-collection.db')
 db = SQLAlchemy(app)
 
 
