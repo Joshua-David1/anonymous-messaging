@@ -11,11 +11,11 @@ from os import environ
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = environ.get("SECRET_KEY")
-app.config['SQLALCHEMY_DATABASE_URI'] ='sqlite:///user-data-collection.db' 
+app.config['SQLALCHEMY_DATABASE_URI'] =environ.get("SQLALCHEMY_DATABASE_URI")
 db = SQLAlchemy(app)
 
 
-# environ.get("SQLALCHEMY_DATABASE_URI")
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)
