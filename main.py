@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
 import pyperclip
 import os
+import urllib.parse
 import psycopg2
 from os import environ
 from decouple import config
@@ -168,10 +169,18 @@ def messages_page():
     else:
         return redirect(url_for('home'))
 
+
+@app.route("/send-message/<username>")
 @app.route('/send-message', methods=["POST", "GET"])
-def send_message_page():
+def send_message_page(username=None):
     if current_user.is_authenticated:
-        form = SendMsgForm()
+        user = User.query.filter_by(username = username).first()
+        if user is not None:
+            form = SendMsgForm(username=username)
+        elif username is not None and user is None:
+            return redirect(url_for('home'))
+        else:
+            form = SendMsgForm()
         if form.validate_on_submit():
             username = form.username.data
             message = request.form['sent_msg']
@@ -211,10 +220,15 @@ def delete_message():
         return redirect(url_for('home'))
 
 
+
 @app.route('/user/<username>')
 def copy_username(username):
     if current_user.is_authenticated:
-        flash("Share username to receive messages")
+        current_page_url = request.base_url
+        parsed_url = urllib.parse.urlparse(current_page_url)
+        root_url = f"{parsed_url.scheme}://{parsed_url.netloc}/"
+        username_to_share = f"{root_url}send-message/{current_user.username}"
+        flash(f"People can use this link \"{username_to_share}\" or your username to send messages to you")
         return redirect(url_for('messages_page'))
     else:
         return redirect(url_for('home'))
