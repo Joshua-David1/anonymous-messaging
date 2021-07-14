@@ -7,6 +7,7 @@ from flask_login import LoginManager, login_user, UserMixin, logout_user, curren
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
 import pyperclip
+import PyQt5
 import os
 import psycopg2
 from os import environ
