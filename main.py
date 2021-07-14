@@ -7,7 +7,6 @@ from flask_login import LoginManager, login_user, UserMixin, logout_user, curren
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
 import pyperclip
-import PyQt5
 import os
 import psycopg2
 from os import environ
@@ -215,8 +214,7 @@ def delete_message():
 @app.route('/user/<username>')
 def copy_username(username):
     if current_user.is_authenticated:
-        pyperclip.copy(username)
-        flash("Username Copied")
+        flash("Share username to receive messages")
         return redirect(url_for('messages_page'))
     else:
         return redirect(url_for('home'))
