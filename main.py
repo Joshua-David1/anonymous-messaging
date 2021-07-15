@@ -133,8 +133,14 @@ def before_request():
 
 @app.route("/")
 def home():
-    return redirect(url_for('login_page'))
+    if current_user.is_authenticated:
+        return redirect(url_for(redirect_url))
+    return render_template('home.html')
 
+
+@app.route('/about')
+def about_page():
+    return render_template('about.html')
 
 @app.route("/login",methods=["POST", "GET"])
 def login_page():
@@ -211,18 +217,20 @@ def send_message_page(username=None):
     redirect_url = 'send_message_page'
     return redirect(url_for('home'))
 
-@app.route('/logout',methods=["POST","GET"])
-def logout_page():
-    global global_username
-    global redirect_url
+
+@app.route('/user/<username>')
+def copy_username(username):
     if current_user.is_authenticated:
-        if request.method == "POST":
-            global_username = None
-            redirect_url = 'messages_page'
-            logout_user()
-            return redirect(url_for('login_page'))
+        current_page_url = request.base_url
+        parsed_url = urllib.parse.urlparse(current_page_url)
+        root_url = f"{parsed_url.scheme}://{parsed_url.netloc}/"
+        username_to_share = f"{root_url}send-message/{current_user.username}"
+        flash(f"{username_to_share}")
+        return redirect(url_for('messages_page'))
+    else:
         return redirect(url_for('home'))
-    return redirect(url_for('home'))
+
+
 
 @app.route('/delete-msg')
 def delete_message():
@@ -244,17 +252,21 @@ def delete_message():
 
 
 
-@app.route('/user/<username>')
-def copy_username(username):
+@app.route('/logout',methods=["POST","GET"])
+def logout_page():
+    global global_username
+    global redirect_url
     if current_user.is_authenticated:
-        current_page_url = request.base_url
-        parsed_url = urllib.parse.urlparse(current_page_url)
-        root_url = f"{parsed_url.scheme}://{parsed_url.netloc}/"
-        username_to_share = f"{root_url}send-message/{current_user.username}"
-        flash(f"{username_to_share}")
-        return redirect(url_for('messages_page'))
-    else:
+        if request.method == "POST":
+            global_username = None
+            redirect_url = 'messages_page'
+            logout_user()
+            return redirect(url_for('login_page'))
         return redirect(url_for('home'))
+    return redirect(url_for('home'))
+
+
+
 
 
 if __name__ == "__main__":

@@ -31,6 +31,17 @@ h2.log-reg-title{
 	font-family: 'Shadows Into Light', cursive;
 }
 
+h2.about-title{
+	color: #6BDDED;
+	font-size: 25px;
+	margin-top: 0px;
+	margin-bottom: 20px;
+	font-weight: 600;
+	font-family: 'Shadows Into Light', cursive;
+}
+
+
+
 input:focus{
 	font-family: serif;
 	outline: none;
@@ -39,8 +50,8 @@ input:focus{
 button.submit-button{
 	border-radius: 15px;
 	background-color: #6BDDED;
-	color: white;
 	position: relative;
+	color: white;
 	top: 50px;
 	transition: 1.5s;
 	width: 150px;
@@ -49,6 +60,29 @@ button.submit-button{
 button.submit-button:hover{
 	background-color: #59ECFE;
 }
+
+button.home-button{
+	border-radius: 15px;
+	background-color: #6BDDED;
+	position: relative;
+	color: white;
+	top: 22px;
+	transition: 1.5s;
+	width: 150px;
+}
+
+button.home-button:hover{
+	background-color: #59ECFE;
+}
+
+button.home-button a{
+	color: white;
+}
+
+button.home-button a:hover{
+	text-decoration: none;
+}
+
 
 .form-div{
 	margin-top: 0px;
@@ -65,6 +99,21 @@ button.submit-button:hover{
 	transform: translate(-50%,-50%);
 	padding: 30px;
 	padding-top: 50px;
+	text-align: center;
+	width: 300px;
+}
+
+.main-home-page{
+	background-color: white;
+	border-radius: 20px;
+	box-shadow: 20px 20px 30px #DAF6F9;
+	height: 500px;
+	position: absolute;
+	top: 45%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	padding: 30px;
+	padding-top: 20px;
 	text-align: center;
 	width: 300px;
 }
@@ -121,4 +170,21 @@ button.submit-button:hover{
 	font-size:15px;
 	top: 20px;
 	padding: 5px;
+}
+
+
+.about-title+p{
+	font-size: 16px;
+	font-family: 'Mate SC', serif;
+}
+
+.fa-home{
+	background-color: #DAF6F9;
+	border-radius: 10px;
+	color: #59ECFE;
+	padding: 7px;
+	font-size: 20px;
+	position: absolute;
+	bottom: 0;
+	transform: translate(-50%,50%);
 }

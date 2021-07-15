@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="main-home-page">
+	<h2 class="about-title">Anonymous Messaging</h2>
+	<p>
+		For you all who are wondering what this website is all about.... This is basically a webiste where you can send people messages anonymously i.e. without revelaing your identity. You can do this all by knowing the person's username whom you wanna send the message. They won't have any idea that you sent it. The same remains to you, if someone sent you a message, you won't know who sent it. 
+	</p>
+	<button class="btn home-button"><a href="{{url_for('login_page')}}">Sign-In</a></button></div>
+{{super()}}
+{% endblock %}
