@@ -237,6 +237,34 @@ span{
 	padding: 5px;
 }
 
+.flash-negative{
+	background-color: none;
+	display: inline-block;
+	border-radius: 5px;
+	color: red;
+	font-size:15px;
+	margin:10px 0 0 0;
+	padding: 5px;
+}
+
+.flash a{
+	color: #00B526;
+	font-weight: 600;
+	transition: 1000ms;
+}
+
+.flash a:hover{
+	color: #00B526;
+	text-decoration: none;
+}
+
+.fa-arrow-circle-left{
+	position: absolute;
+	color: #6BDDED;
+	left: 40px;
+	top: 30px;
+}
+
 button.submit-button{
 	border-radius: 15px;
 	background-color: #6BDDED;
@@ -404,10 +432,10 @@ button.submit-button:hover{
 	}
 	.brand-logo{
 		position: absolute;
-		top: -50%;
-		left: 10%;
+		top: -150%;
+		left: 85%;
 		transform: translate(-50%,-50%);
-		width: 60px;
+		width: 0px;
 	}
 	.send-msg-button{
 		position: absolute;
@@ -497,5 +525,10 @@ button.submit-button:hover{
 		left: 50%;
 		transform: translate(-50%, -50%);
 		width: 75px;
+	}
+	.fa-arrow-circle-left.fa-2x{
+		left: 30px;
+		top: 20px;
+		font-size: 20px;
 	}
 }

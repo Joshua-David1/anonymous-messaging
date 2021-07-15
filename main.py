@@ -26,6 +26,9 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
+redirect_url = 'messages_page'
+global_username = None
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
@@ -135,17 +138,19 @@ def home():
 
 @app.route("/login",methods=["POST", "GET"])
 def login_page():
+    global redirect_url
     if not current_user.is_authenticated:
         form = LoginForm()
         if form.validate_on_submit():
             user = User.query.filter_by(username=form.username.data).first()
             login_user(user)
-            return redirect(url_for('messages_page'))
+            return redirect(url_for(redirect_url))
         return render_template('login.html', form=form)
-    return redirect(url_for('messages_page'))
+    return redirect(url_for(redirect_url))
 
 @app.route("/register", methods=["POST", "GET"])
 def register_page():
+    global redirect_url
     if not current_user.is_authenticated:
         form = RegisterForm()
         if form.validate_on_submit():
@@ -156,13 +161,15 @@ def register_page():
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user)
-            return redirect(url_for('messages_page'))
+            return redirect(url_for(redirect_url))
         return render_template('register.html', form=form)
-    return redirect(url_for('messages_page'))
+    return redirect(url_for(redirect_url))
 
 @app.route("/user-messages")
 def messages_page():
+    global redirect_url
     if current_user.is_authenticated:
+        redirect_url = 'messages_page'
         username = User.query.filter_by(username = current_user.username).first()
         user_messages = Message.query.filter_by(username = current_user.username).all()
         return render_template('user-msgs.html',username=username.username, user_messages = [user for user in user_messages][::-1])
@@ -173,11 +180,19 @@ def messages_page():
 @app.route("/send-message/<username>")
 @app.route('/send-message', methods=["POST", "GET"])
 def send_message_page(username=None):
+    global global_username
+    global redirect_url
     if current_user.is_authenticated:
+        if global_username is not None:
+            username = global_username
+            global_username = None
+        redirect_url = 'send_message_page'
         user = User.query.filter_by(username = username).first()
         if user is not None:
             form = SendMsgForm(username=username)
         elif username is not None and user is None:
+            flash("User not found")
+            redirect_url = 'messages_page'
             return redirect(url_for('home'))
         else:
             form = SendMsgForm()
@@ -190,12 +205,20 @@ def send_message_page(username=None):
             flash("Message sent successfully")
             return redirect(url_for('messages_page'))
         return render_template('send-msgs.html',form = form)
+
+    if username is not None:
+        global_username = username
+    redirect_url = 'send_message_page'
     return redirect(url_for('home'))
 
 @app.route('/logout',methods=["POST","GET"])
 def logout_page():
+    global global_username
+    global redirect_url
     if current_user.is_authenticated:
         if request.method == "POST":
+            global_username = None
+            redirect_url = 'messages_page'
             logout_user()
             return redirect(url_for('login_page'))
         return redirect(url_for('home'))
@@ -228,7 +251,7 @@ def copy_username(username):
         parsed_url = urllib.parse.urlparse(current_page_url)
         root_url = f"{parsed_url.scheme}://{parsed_url.netloc}/"
         username_to_share = f"{root_url}send-message/{current_user.username}"
-        flash(f"People can use this link \"{username_to_share}\" or your username to send messages to you")
+        flash(f"{username_to_share}")
         return redirect(url_for('messages_page'))
     else:
         return redirect(url_for('home'))

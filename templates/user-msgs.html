@@ -21,9 +21,20 @@
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
+                    {% if message[0] == 'N' %}
+                    <span class="flash-negative">
+                        !{{message}}!
+                    </span>
+                    {% elif message[0] == 'h' %}
+                    <span class="flash">
+                        Share this link <a href="{{url_for('send_message_page',username=username)}}">{{message}}</a>.
+                        People can use this link or your username to send you messages.
+                    </span>
+                    {% else %}
                     <span class="flash">
                     {{message}}!!
                     </span>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
         {% endwith %}

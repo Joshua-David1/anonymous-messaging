@@ -2,6 +2,7 @@
 {% block content %}
 <div class="send-msg-div">
 	<img src="{{url_for('static',filename='assets/brand-logo-circle.png')}}" class="brand-logo-circle">
+	<a href="{{url_for('messages_page')}}"><i class="fas fa-arrow-circle-left fa-2x"></i></a>
 	<h2 class="send-message-title">Send Message</h2>
 	<form action="{{url_for('send_message_page')}}" method="POST" novalidate>
 		{{form.csrf_token}}
