@@ -193,7 +193,7 @@ def send_message_page(username=None):
         elif username is not None and user is None:
             flash("User not found")
             redirect_url = 'messages_page'
-            return redirect(url_for('home'))
+            return redirect(url_for(redirect_url))
         else:
             form = SendMsgForm()
         if form.validate_on_submit():
