@@ -16,7 +16,9 @@
 			<h2 class="setting-page-titles">Users</h2>
 			<div class="available-users-list">
 				{% for user in user_list %}
-				<h5 class="userlist-username">{{user.username}}</h5>
+				{% if user.username[:8] != "testuser" %} 
+					<h5 class="userlist-username">{{user.username}}</h5>
+				{% endif %}
 				{% endfor %}
 			</div>
 		</div>
