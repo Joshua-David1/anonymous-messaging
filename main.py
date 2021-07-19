@@ -2,7 +2,7 @@ from flask import Flask, flash, redirect, url_for, render_template, request, ses
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField
-from wtforms.validators import DataRequired, ValidationError, InputRequired, Regexp
+from wtforms.validators import DataRequired, ValidationError, InputRequired, Regexp, EqualTo
 from flask_login import LoginManager, login_user, UserMixin, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
@@ -28,6 +28,7 @@ login_manager.init_app(app)
 
 redirect_url = 'messages_page'
 global_username = None
+current_tab = "available-users"
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -121,6 +122,13 @@ class SendMsgForm(FlaskForm):
     username = StringField('username', render_kw={"placeholder":"Username to send msg","maxlength":25},validators=[InputRequired(message="Enter username"), user_check(), same_user_check()])
     sent_msg = TextAreaField('sent_msg', render_kw={"placeholder":"type your message here...","maxlength":350},validators=[InputRequired()])
 
+
+class ChangeUsernameForm(FlaskForm):
+    new_username = StringField('new_username', render_kw={"placeholder":"New username", "maxlength" :25}, validators=[InputRequired(message="Enter new username"), min_char_check,user_check(register=True),  Regexp("^[\w]*$", message="Only letter, numbers and underscore."),Regexp("^[a-z\_0-9]*$", message="Only small letters"), Regexp("^[a-z\_]+[a-z\_0-9]*$", message="Cannot begin with numbers") ])
+
+class ChangePasswordForm(FlaskForm):
+    new_password = PasswordField('new_password', render_kw={"placeholder":"Enter new password","maxlength":20}, validators = [InputRequired(message="Enter new password"), min_char_check, EqualTo('confirm_password', message="Passwords must match")])
+    confirm_password = PasswordField('confirm_password', render_kw={"placeholder":"Re-type password"})
 ##########
 
 @app.before_request
@@ -232,6 +240,7 @@ def copy_username(username):
 
 
 
+#### Deletion ####
 @app.route('/delete-msg')
 def delete_message():
     if current_user.is_authenticated:
@@ -250,23 +259,86 @@ def delete_message():
     else:
         return redirect(url_for('home'))
 
+#################
 
 
+########## Settings ###############
+
+
+@app.route('/settings', methods=["POST","GET"])
+def settings_page():
+    global current_tab
+    if current_user.is_authenticated:
+        changeUsernameForm = ChangeUsernameForm()
+        changePasswordForm = ChangePasswordForm()
+        users = User.query.all()
+        if request.method == "POST":
+            try:
+                form = request.form['new_username']
+                field = 'new_username'
+            except:
+                form = request.form['new_password']
+                field = 'new_password'
+            if field == 'new_username':
+                current_tab = "change-username"
+                if changeUsernameForm.validate_on_submit():
+                    new_username = changeUsernameForm.new_username.data
+                    user = User.query.filter_by(username=current_user.username).first()
+                    user.username = new_username
+                    db.session.commit()
+                    flash("Username changed!")
+                return render_template('settings.html', user_list = users[::-1], changeUsernameForm=changeUsernameForm, changePasswordForm=changePasswordForm, current_tab = current_tab)
+            elif field == 'new_password':
+                current_tab = "change-password"
+                if changePasswordForm.validate_on_submit():
+                    new_password = changePasswordForm.new_password.data
+                    user = User.query.filter_by(username = current_user.username).first()
+                    user.password = new_password
+                    db.session.commit()
+                    flash("Password Changed")
+                return render_template('settings.html', user_list = users[::-1], changeUsernameForm=changeUsernameForm, changePasswordForm=changePasswordForm, current_tab = current_tab) 
+        return render_template('settings.html', user_list = users[::-1], changeUsernameForm=changeUsernameForm, changePasswordForm=changePasswordForm, current_tab = current_tab)
+    else:
+        return redirect(url_for('home'))
+#####################################
+
+
+##### logout page ######
 @app.route('/logout',methods=["POST","GET"])
 def logout_page():
     global global_username
     global redirect_url
+    global current_tab
     if current_user.is_authenticated:
         if request.method == "POST":
             global_username = None
             redirect_url = 'messages_page'
             logout_user()
+            current_tab = "available-users"
             return redirect(url_for('login_page'))
         return redirect(url_for('home'))
     return redirect(url_for('home'))
 
-
-
+####### delete page ################
+@app.route('/delete', methods=["POST","GET"])
+def delete_page():
+    global global_username
+    global redirect_url
+    global current_tab
+    if current_user.is_authenticated:
+        if request.method == "POST":
+            temp_user = current_user.username
+            global_username = None
+            redirect_url = 'messages_page'
+            logout_user()
+            current_tab = "available-users"
+            user = User.query.filter_by(username=temp_user).first()
+            db.session.delete(user)
+            db.session.commit()
+            flash('Deleted your account...')
+            return redirect(url_for('login_page'))
+        return redirect(url_for('home'))
+    return redirect(url_for('home'))
 
 
 if __name__ == "__main__":

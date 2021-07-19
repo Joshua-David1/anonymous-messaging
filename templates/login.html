@@ -16,6 +16,11 @@
         {% if form.password.errors and not form.username.errors %}
             <span style="color:red;font-size:15px;margin:0">{{ form.password.errors[0]}}</span>
         {% endif %}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <span class="flash">{{messages[0]}}</span>
+        {% endif %}
+        {% endwith %}
         <button class="btn submit-button">Login</button>
     </form>
     </div>
