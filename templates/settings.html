@@ -2,6 +2,7 @@
 
 {% block content %}
 
+<a href="{{url_for('messages_page')}}"><i class="fas fa-chevron-circle-left fa-2x"></i></a>
 <div class="settings-div">
 	<div class="options-col">
 		<button class="tab-button active available-users">Available users</button>
@@ -45,7 +46,7 @@
 				{{changePasswordForm.csrf_token}}
 				{{changePasswordForm.new_password}}
 				{% if changePasswordForm.new_password.errors %}
-					<span style="color:red;font-size: 15px;margin: 0;">{{ changePasswordForm.new_password.errors[0] }}</span>
+					<span class="pswd-err">{{ changePasswordForm.new_password.errors[0] }}</span>
 				{% endif %}
 				{{changePasswordForm.confirm_password}}
 				{% with messages = get_flashed_messages() %}
