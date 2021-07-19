@@ -265,6 +265,15 @@ span{
 	top: 30px;
 }
 
+.gear-icon{
+	position: absolute;
+	right: 20px;
+}
+
+.fa-cog{
+	font-size: 19px;
+}
+
 button.submit-button{
 	border-radius: 15px;
 	background-color: #6BDDED;
@@ -530,5 +539,9 @@ button.submit-button:hover{
 		left: 30px;
 		top: 20px;
 		font-size: 20px;
+	}
+
+	.gear-icon{
+		top: 10px;
 	}
 }

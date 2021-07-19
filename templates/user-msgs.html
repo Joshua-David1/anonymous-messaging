@@ -6,6 +6,7 @@
         <p class="chat-screen-username">{{username}}</p>
         <a href="{{url_for('copy_username',username=username)}}" class="copy-username">Share you username</a>
         <img class="brand-logo" src="{{url_for('static',filename='assets/brand-logo1.png')}}">
+        <a href="{{url_for('settings_page')}}" style="color:#6BDDED" class="gear-icon"><i class="fas fa-cog"></i></a>
         <div class="send-msg-button">
             <a  href="{{url_for('send_message_page')}}">Send Message</a>
         </div>
