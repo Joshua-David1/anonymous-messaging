@@ -330,12 +330,12 @@ def delete_page():
             temp_user = current_user.username
             global_username = None
             redirect_url = 'messages_page'
-            logout_user()
             current_tab = "available-users"
             user = User.query.filter_by(username=temp_user).first()
             db.session.delete(user)
             db.session.commit()
             flash('Deleted your account...')
+            logout_user()
             return redirect(url_for('login_page'))
         return redirect(url_for('home'))
     return redirect(url_for('home'))

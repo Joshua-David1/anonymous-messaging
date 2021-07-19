@@ -14,9 +14,11 @@
 		<div id="available-users" class="tab-content">
 			<p style="display: none;" class="current-tab">{{current_tab}}</p>
 			<h2 class="setting-page-titles">Users</h2>
-			{% for user in user_list %}
-			<h5 class="userlist-username">{{user.username}}</h5>
-			{% endfor %}
+			<div class="available-users-list">
+				{% for user in user_list %}
+				<h5 class="userlist-username">{{user.username}}</h5>
+				{% endfor %}
+			</div>
 		</div>
 		<div id="change-username" class="tab-content">
 			<h2 class="setting-page-titles">Change Username</h2>

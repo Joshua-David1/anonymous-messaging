@@ -201,4 +201,13 @@ span{
 	}
 
 	/**/
+
+	/*Specific Tabs*/
+	#available-users{
+		overflow-y: auto;
+	}
+
+	.userlist-username{
+		padding: 10px;
+	}
 }
