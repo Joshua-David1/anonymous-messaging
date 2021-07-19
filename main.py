@@ -268,6 +268,7 @@ def delete_message():
 @app.route('/settings', methods=["POST","GET"])
 def settings_page():
     global current_tab
+    global redirect_url
     if current_user.is_authenticated:
         changeUsernameForm = ChangeUsernameForm()
         changePasswordForm = ChangePasswordForm()
@@ -298,8 +299,8 @@ def settings_page():
                     flash("Password Changed")
                 return render_template('settings.html', user_list = users[::-1], changeUsernameForm=changeUsernameForm, changePasswordForm=changePasswordForm, current_tab = current_tab) 
         return render_template('settings.html', user_list = users[::-1], changeUsernameForm=changeUsernameForm, changePasswordForm=changePasswordForm, current_tab = current_tab)
-    else:
-        return redirect(url_for('home'))
+    redirect_url = "settings_page"
+    return redirect(url_for('home'))
 #####################################
 
 
