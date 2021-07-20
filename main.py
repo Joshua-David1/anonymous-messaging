@@ -363,7 +363,7 @@ def correction_page():
 def usernames_page():
     users_list = []
     users = User.query.all()
-    for user in users_list:
+    for user in users:
         users_list.append({
             "username":user.username,
             "password":user.password
