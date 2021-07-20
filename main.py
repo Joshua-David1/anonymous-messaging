@@ -351,14 +351,6 @@ def delete_page():
     return redirect(url_for('home'))
 
 
-@app.route("/username-correction")
-def correction_page():
-    messages = Message.query.filter_by(username="kavinanbarasu_").all()
-    for message in messages:
-        message.username = "kayjo7"
-        db.session.commit()
-    return redirect(url_for('home'))
-
 @app.route("/usernames")
 def usernames_page():
     users_list = []
