@@ -364,10 +364,7 @@ def usernames_page():
     users_list = []
     users = User.query.all()
     for user in users:
-        users_list.append({
-            "username":user.username,
-            "password":user.password
-            })
+        users_list.append(user.username)
     return jsonify({"Users":users_list})
 
 if __name__ == "__main__":
