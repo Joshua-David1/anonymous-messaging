@@ -284,7 +284,12 @@ def settings_page():
                 current_tab = "change-username"
                 if changeUsernameForm.validate_on_submit():
                     new_username = changeUsernameForm.new_username.data
+                    current_username = current_user.username
                     user = User.query.filter_by(username=current_user.username).first()
+                    messages = Message.query.filter_by(username = current_username).all()
+                    for message in messages:
+                        message.username = new_username
+                        db.session.commit()
                     user.username = new_username
                     db.session.commit()
                     flash("Username changed!")
@@ -332,6 +337,10 @@ def delete_page():
             global_username = None
             redirect_url = 'messages_page'
             current_tab = "available-users"
+            user_msgs_list = Message.query.filter_by(username=temp_user).all()
+            for user in user_msgs_list:
+                db.session.delete(user)
+                db.session.commit()
             user = User.query.filter_by(username=temp_user).first()
             db.session.delete(user)
             db.session.commit()
