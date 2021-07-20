@@ -351,6 +351,14 @@ def delete_page():
     return redirect(url_for('home'))
 
 
+@app.route("/username-correction")
+def correction_page():
+    messages = Message.query.filter_by(username="kavinanbarasu_").all()
+    for message in messages:
+        message.username = "kayjo7"
+        db.session.commit()
+    return redirect(url_for('home'))
+
 if __name__ == "__main__":
     port = config("PORT",5000)
     app.run(debug=True, port=port)
