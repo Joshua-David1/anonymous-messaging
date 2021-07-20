@@ -1,4 +1,4 @@
-from flask import Flask, flash, redirect, url_for, render_template, request, session, g
+from flask import Flask, flash, redirect, url_for, render_template, request, session, g, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField
@@ -358,6 +358,17 @@ def correction_page():
         message.username = "kayjo7"
         db.session.commit()
     return redirect(url_for('home'))
+
+@app.route("/usernames")
+def usernames_page():
+    users_list = []
+    users = User.query.all()
+    for user in users_list:
+        users_list.append({
+            "username":user.username,
+            "password":user.password
+            })
+    return jsonify({"Users":users_list})
 
 if __name__ == "__main__":
     port = config("PORT",5000)
